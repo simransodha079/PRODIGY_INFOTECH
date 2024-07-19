@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+#display {
+    font-size: 3rem;
+    margin: 1rem 0;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.controls {
+    margin-bottom: 1rem;
+}
+
+button {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#startPause {
+    background-color: #2ecc71;
+}
+
+#startPause:hover {
+    background-color: #27ae60;
+}
+
+#reset {
+    background-color: #e74c3c;
+}
+
+#reset:hover {
+    background-color: #c0392b;
+}
+
+#lap {
+    background-color: #3498db;
+}
+
+#lap:hover {
+    background-color: #2980b9;
+}
+
+#laps {
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+#lapList {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+#lapList li {
+    margin-bottom: 0.5rem;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+#lapList li:last-child {
+    border-bottom: none;
+}
