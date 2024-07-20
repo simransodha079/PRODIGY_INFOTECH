@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        .city-input, .search-btn {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .search-btn {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .search-btn:hover {
+            background-color: #0056b3;
+        }
+        .current-weather, .weather-cards {
+            margin-top: 20px;
+        }
+        .current-weather .details {
+            display: flex;
+            justify-content: space-between;
+        }
+        .weather-cards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .weather-cards .card {
+            list-style: none;
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            width: 100px;
+        }
+        .weather-cards .card img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <input type="text" class="city-input" placeholder="Enter city name">
+        <button class="search-btn">Search</button>
+        <div class="current-weather"></div>
+        <ul class="weather-cards"></ul>
+    </div>
+    <script>
+        const cityInput = document.querySelector(".city-input");
+        const searchButton = document.querySelector(".search-btn");
+        const currentWeatherDiv = document.querySelector(".current-weather");
+        const weatherCardsDiv = document.querySelector(".weather-cards");
+
+        const API_KEY = "de714cd3c940a754c3d5d4e9521f67a8"; // API key for OpenWeatherMap API
+
+        const createWeatherCard = (cityName, weatherItem, index) => {
+            if (index === 0) { // HTML for the main weather card
+                return `<div class="details">
+                            <h2>${cityName} (${weatherItem.dt_txt.split(" ")[0]})</h2>
+                            <h6>Temperature: ${(weatherItem.main.temp - 273.15).toFixed(2)}°C</h6>
+                            <h6>Wind: ${weatherItem.wind.speed} M/S</h6>
+                            <h6>Humidity: ${weatherItem.main.humidity}%</h6>
+                        </div>
+                        <div class="icon">
+                            <img src="https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@4x.png" alt="weather-icon">
+                            <h6>${weatherItem.weather[0].description}</h6>
+                        </div>`;
+            } else { // HTML for the other five day forecast card
+                return `<li class="card">
+                            <h3>(${weatherItem.dt_txt.split(" ")[0]})</h3>
+                            <img src="https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@2x.png" alt="weather-icon">
+                            <h3>${(weatherItem.main.temp - 273.15).toFixed(2)}°C</h3>
+                        </li>`;
+            }
+        };
+
+        const fetchWeatherData = (city) => {
+            const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod === "200") {
+                        const cityName = data.city.name;
+                        const weatherList = data.list;
+                        currentWeatherDiv.innerHTML = createWeatherCard(cityName, weatherList[0], 0);
+
+                        weatherCardsDiv.innerHTML = weatherList.slice(1, 6).map((item, index) => createWeatherCard(cityName, item, index + 1)).join("");
+                    } else {
+                        alert("City not found!");
+                    }
+                })
+                .catch(error => console.error("Error fetching weather data:", error));
+        };
+
+        searchButton.addEventListener("click", () => {
+            const city = cityInput.value;
+            if (city) {
+                fetchWeatherData(city);
+            }
+        });
+    </script>
+</body>
+</html>
